@@ -336,8 +336,11 @@
     box-shadow:0 26px 54px rgba(61,47,0,0.35);
     position:relative; overflow:hidden;
     transform:rotate(-3deg); transition:transform .35s ease;
+    display:flex; flex-direction:column;
   }
   .ref-card:hover{ transform:rotate(0deg); }
+  .rc-btn{ margin-top:auto; }
+  @media (min-width:761px){ .ref-card{ width:520px; aspect-ratio:1.586/1; } }
   .ref-card::before{ content:''; position:absolute; top:-80px; right:-80px; width:220px; height:220px; border-radius:50%; background:rgba(255,229,18,0.10); }
   .ref-card::after{ content:''; position:absolute; top:-36px; right:-36px; width:130px; height:130px; border-radius:50%; background:rgba(255,229,18,0.16); }
   .rc-top{ display:flex; justify-content:flex-end; align-items:center; margin-bottom:22px; position:relative; z-index:1; }
