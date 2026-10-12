@@ -163,7 +163,9 @@
     margin-bottom:24px;
   }
   .hero .kicker::before{ content:''; width:12px; height:12px; background:var(--yellow); }
-  .hero h1{ font-size:clamp(38px,5.6vw,68px); margin-bottom:22px; }
+  .hero h1{ font-size:clamp(38px,4.7vw,60px); margin-bottom:22px; }
+  @media (max-width:700px){ .d-br{ display:none; } }
+  @media (min-width:701px){ .hero h1 .yel{ white-space:nowrap; } }
   .hero h1 .yel{ color:inherit; background:linear-gradient(transparent 80%, var(--yellow) 80%); }
   .hero .sub{ font-size:clamp(17px,1.8vw,21px); color:#4A4A46; max-width:54ch; margin-bottom:34px; }
   .hero-ctas{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:16px; }
@@ -544,7 +546,7 @@
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <span class="kicker">Mount Louisa &amp; Kirwan Property Specialists</span>
-      <h1>What's your Mount Louisa or Kirwan home <span class="yel">really worth?</span></h1>
+      <h1>What's your Mount<br class="d-br"> Louisa or Kirwan<br class="d-br"> home <span class="yel">really worth?</span></h1>
       <p class="sub">Online estimates guess. Paul and Mel know the streets and the buyers, and their recent results include three sales at $1 million or more. Get a free, personal appraisal from the husband and wife team inside Queensland's number one Ray White office.</p>
       <div class="hero-ctas">
         <a class="btn btn-yellow" href="#appraisal">Get My Free Appraisal</a>
