@@ -163,13 +163,16 @@
     margin-bottom:24px;
   }
   .hero .kicker::before{ content:''; width:12px; height:12px; background:var(--yellow); }
-  .hero h1{ font-size:clamp(38px,4.7vw,60px); margin-bottom:22px; }
+  .hero h1{ font-size:clamp(38px,5.6vw,68px); margin-bottom:22px; }
   @media (max-width:700px){ .d-br{ display:none; } }
   @media (min-width:701px){ .hero h1 .yel{ white-space:nowrap; } }
   .hero h1 .yel{ color:inherit; background:linear-gradient(transparent 80%, var(--yellow) 80%); }
   .hero .sub{ font-size:clamp(17px,1.8vw,21px); color:#4A4A46; max-width:54ch; margin-bottom:34px; }
   .hero-ctas{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:16px; }
-  .hero-note{ font-size:13.5px; color:#6B6B67; margin-bottom:30px; max-width:52ch; }
+  .hero-note{ font-size:13.5px; color:#6B6B67; margin-bottom:10px; max-width:52ch; }
+  .hero-all{ font-size:13.5px; margin-bottom:30px; }
+  .hero-all a{ color:var(--ink); font-weight:700; text-decoration:underline; text-underline-offset:3px; transition:color .2s ease; }
+  .hero-all a:hover, .hero-all a:active{ color:var(--slate); }
   .hero-chips{ display:flex; flex-wrap:wrap; gap:10px; }
   .hero-chips{ border-top:1px solid #E7E5E0; padding-top:18px; max-width:560px; gap:8px 26px; }
   .chip{
@@ -325,8 +328,7 @@
   .review .who span{ display:block; font-weight:500; color:var(--grey); font-size:13px; }
 
   /* Referral */
-  .referral{ background:var(--yellow); }
-  .referral .eyebrow::before{ background:var(--ink); }
+  .referral{ background:var(--stone); }
   .ref-grid{ display:grid; grid-template-columns:1fr auto; gap:30px; align-items:center; }
   @media (max-width:760px){ .ref-grid{ grid-template-columns:1fr; } }
   .referral h2{ font-size:clamp(26px,3.6vw,40px); }
@@ -345,7 +347,13 @@
   @media (min-width:761px){ .ref-card{ width:520px; aspect-ratio:1.586/1; } }
   .ref-card::before{ content:''; position:absolute; top:-80px; right:-80px; width:220px; height:220px; border-radius:50%; background:rgba(255,229,18,0.10); }
   .ref-card::after{ content:''; position:absolute; top:-36px; right:-36px; width:130px; height:130px; border-radius:50%; background:rgba(255,229,18,0.16); }
-  .rc-top{ display:flex; justify-content:flex-end; align-items:center; margin-bottom:22px; position:relative; z-index:1; }
+  .rc-top{ display:flex; align-items:center; gap:14px; margin-bottom:22px; position:relative; z-index:1; }
+  .rc-chip{ width:44px; height:32px; border-radius:6px; flex-shrink:0;
+    background:linear-gradient(135deg,#EED37A 0%,#C9A43B 55%,#E3C060 100%); position:relative; }
+  .rc-chip::before{ content:''; position:absolute; inset:6px 9px; border:1px solid rgba(40,30,0,0.35); border-radius:4px; }
+  .rc-chip::after{ content:''; position:absolute; top:6px; bottom:6px; left:50%; width:1px; background:rgba(40,30,0,0.3); }
+  .rc-nfc{ width:20px; height:20px; stroke:#8A8A86; fill:none; stroke-width:1.8; stroke-linecap:round; }
+  .rc-tag{ margin-left:auto; }
   .rc-tag{ font-size:10.5px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#8A8A86; }
   .rc-amt{ font-size:54px; font-weight:900; letter-spacing:-0.02em; color:var(--yellow); line-height:1; position:relative; z-index:1; }
   .rc-label{ font-size:12px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#C9C9C5; margin-top:8px; position:relative; z-index:1; }
@@ -545,14 +553,15 @@
 <header class="hero" id="top">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <span class="kicker">Mount Louisa &amp; Kirwan Property Specialists</span>
-      <h1>What's your Mount<br class="d-br"> Louisa or Kirwan<br class="d-br"> home <span class="yel">really worth?</span></h1>
-      <p class="sub">Online estimates guess. Paul and Mel know the streets and the buyers, and their recent results include three sales at $1 million or more. Get a free, personal appraisal from the husband and wife team inside Queensland's number one Ray White office.</p>
+      <span class="kicker">Townsville Property Specialists</span>
+      <h1>What's your home <span class="yel">really worth?</span></h1>
+      <p class="sub">Online estimates guess. Get a free, personal appraisal from the husband and wife team inside Queensland's number one Ray White office. Paul and Mel's recent results include three sales at $1 million or more.</p>
       <div class="hero-ctas">
         <a class="btn btn-yellow" href="#appraisal">Get My Free Appraisal</a>
         <a class="btn btn-ghost" href="tel:+61419121543">&#9742; 0419 121 543</a>
       </div>
-      <p class="hero-note">Every appraisal is prepared personally by Paul or Mel, never by an algorithm. Free, with no obligation.</p>
+      <p class="hero-note">Every appraisal is prepared personally by Paul and Mel, unless you specifically ask for a computer generated appraisal. Free, with no obligation.</p>
+      <p class="hero-all"><a href="https://raywhitetownsville.com.au/agents/paul--melissa-kotze/150297" target="_blank" rel="noopener">See all our sales, reviews and active listings &#8594;</a></p>
       <div class="hero-chips">
         <span class="chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 4V2H6v2H2v4a5 5 0 0 0 5 5h.4a6 6 0 0 0 3.6 2.9V18H8v4h8v-4h-3v-2.1a6 6 0 0 0 3.6-2.9H17a5 5 0 0 0 5-5V4h-4zM4 8V6h2v4.9A3 3 0 0 1 4 8zm16 0a3 3 0 0 1-2 2.9V6h2v2z"/></svg><span class="ct"><b>Premier Performers</b> 2023/24 to 2025/26</span></span>
         <span class="chip"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.8 7 22l5-2.8L17 22l-1.6-8.2a7 7 0 0 1-6.8 0z"/></svg><span class="ct"><b>Top Agents</b> Mount Louisa, Rosslea &amp; Thuringowa 2025</span></span>
@@ -579,7 +588,7 @@
       <div class="aw reveal">
         <div class="aw-ico aw-rw"><b>RW</b></div>
         <b>No. 2</b>
-        <span>Ray White office worldwide for number of sales</span>
+        <span>Ray White International for number of sales</span>
         <small>Ray White Townsville &#183; 2025/26</small>
       </div>
       <div class="aw reveal">
@@ -656,7 +665,7 @@
     <div class="sec-head reveal">
       <span class="eyebrow">Free, No Obligation</span>
       <h2>Choose the update that <span class="hl">suits you.</span></h2>
-      <p class="lead">Whether you're simply keeping an eye on the market or quietly planning a move, start with real local information instead of a computer-generated number.</p>
+      <p class="lead">Whether you're simply keeping an eye on the market or quietly planning a move, start with real local information instead of a computer generated number. Comfortable with a computer generated appraisal for now? Just ask.</p>
     </div>
     <div class="offers">
       <div class="offer reveal">
@@ -816,13 +825,13 @@
     <div class="reveal">
       <span class="eyebrow" style="color:#3D3A20;">Referral Program</span>
       <h2>Know someone thinking of selling?</h2>
-      <p>Introduce them to Paul and Mel. Once their property sells and settlement is complete, you could receive a $500 Visa card. Eligibility requirements and terms apply.</p>
+      <p>Introduce them to Paul and Mel. Once their property sells and settlement is complete, you will receive a $500 Visa gift card. Eligibility requirements and terms apply.</p>
     </div>
     <div class="reveal">
       <div class="ref-card">
-        <div class="rc-top"><span class="rc-tag">Referral Reward</span></div>
+        <div class="rc-top"><span class="rc-chip"></span><svg class="rc-nfc" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a9 9 0 0 1 0 6"/><path d="M9.5 7.5a12 12 0 0 1 0 9"/><path d="M13 6a15 15 0 0 1 0 12"/></svg><span class="rc-tag">Referral Reward</span></div>
         <div class="rc-amt">$500</div>
-        <div class="rc-label">Visa card reward*</div>
+        <div class="rc-label">Visa gift card reward*</div>
         <div class="rc-holder">From Paul &amp; Mel &#183; Ray White Townsville</div>
         <a class="btn btn-yellow rc-btn" href="#contact">Refer Someone Now</a>
       </div>
@@ -848,7 +857,7 @@
       </details>
       <details>
         <summary>Is this an automated valuation?</summary>
-        <p>No. A personal appraisal is prepared by Paul or Mel and considers factors an automated estimate often misses, such as condition, improvements and recent comparable sales.</p>
+        <p>No. A personal appraisal is prepared by Paul or Mel and considers factors an automated estimate often misses, such as condition, improvements and recent comparable sales. A computer generated valuation is only provided if you specifically request one.</p>
       </details>
       <details>
         <summary>Which Townsville suburbs do Paul and Mel service?</summary>
@@ -978,7 +987,7 @@
   "mainEntity":[
     {"@type":"Question","name":"Is the property update really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Both the suburb market update and the personal property appraisal are free, with no obligation to sell or list your property."}},
     {"@type":"Question","name":"Do I need to be ready to sell?","acceptedAnswer":{"@type":"Answer","text":"Not at all. Many homeowners simply want to stay informed about the local market. There is no pressure to take any further action."}},
-    {"@type":"Question","name":"Is this an automated valuation?","acceptedAnswer":{"@type":"Answer","text":"No. A personal appraisal is prepared by Paul or Mel and considers factors an automated estimate often misses, such as condition, improvements and recent comparable sales."}},
+    {"@type":"Question","name":"Is this an automated valuation?","acceptedAnswer":{"@type":"Answer","text":"No. A personal appraisal is prepared by Paul or Mel and considers factors an automated estimate often misses, such as condition, improvements and recent comparable sales. A computer generated valuation is only provided if you specifically request one."}},
     {"@type":"Question","name":"Which Townsville suburbs do Paul and Mel service?","acceptedAnswer":{"@type":"Answer","text":"Paul and Mel specialise in Mount Louisa and Kirwan while servicing greater Townsville, including surrounding suburbs."}}
   ]
 }
