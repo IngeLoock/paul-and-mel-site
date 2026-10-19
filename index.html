@@ -474,6 +474,50 @@
     .f-office{ order:5; }
     .f-bar{ justify-content:center; text-align:center; font-size:12px; padding-top:18px; gap:6px; }
   }
+
+  /* Subpage additions */
+  .page-hero{ padding:clamp(52px,6vw,86px) 0 clamp(34px,4vw,56px); }
+  .page-hero h1{ font-size:clamp(34px,4.6vw,58px); letter-spacing:-0.02em; max-width:22ch; }
+  .page-hero .lead{ margin-top:16px; max-width:62ch; color:var(--grey); font-size:clamp(16px,1.6vw,18.5px); line-height:1.55; }
+  .page-hero .hero-ctas{ margin-top:26px; }
+  .grid2{ display:grid; grid-template-columns:1.05fr 1fr; gap:clamp(28px,4vw,56px); align-items:center; }
+  @media(max-width:860px){ .grid2{ grid-template-columns:1fr; } }
+  .ph-round{ border-radius:var(--radius); overflow:hidden; }
+  .ph-round img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .sold-wall{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  @media(max-width:900px){ .sold-wall{ grid-template-columns:repeat(2,1fr); gap:12px; } }
+  .sold-wall img{ width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:12px; display:block; box-shadow:0 10px 26px rgba(18,18,18,0.12); }
+  .sold-wall img:nth-child(4n+1){ transform:rotate(-1.4deg); }
+  .sold-wall img:nth-child(4n+3){ transform:rotate(1.2deg); }
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media(max-width:700px){ .stat-row{ grid-template-columns:1fr; } }
+  .stat{ background:var(--white); border-radius:var(--radius); padding:26px 28px; }
+  .bg-dark .stat{ background:var(--slate); }
+  .stat b{ display:block; font-size:clamp(30px,3.2vw,42px); font-weight:900; letter-spacing:-0.02em; line-height:1.05; }
+  .stat span{ display:block; color:var(--grey); font-size:14.5px; margin-top:8px; }
+  .bg-dark .stat span{ color:#C9C9C5; }
+  .cta-band{ background:var(--ink); color:var(--white); }
+  .cta-band .wrap{ display:flex; flex-wrap:wrap; gap:26px; align-items:center; justify-content:space-between; }
+  .cta-band h2{ font-size:clamp(26px,3.4vw,40px); max-width:22ch; }
+  .list-ticks{ list-style:none; }
+  .list-ticks li{ padding:9px 0 9px 32px; position:relative; font-size:16px; }
+  .list-ticks li::before{ content:'\2713'; position:absolute; left:0; top:9px; width:22px; height:22px; border-radius:50%; background:var(--yellow); color:var(--ink); font-size:12px; font-weight:900; display:flex; align-items:center; justify-content:center; }
+  .story-tile{ background:var(--white); border-radius:var(--radius); padding:26px 28px; }
+  .story-tile .where{ font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#8A8A86; margin-bottom:10px; }
+  .story-tile p{ font-size:15.5px; line-height:1.6; }
+  .rc-tnc{ display:block; text-align:center; margin-top:12px; font-size:11.5px; letter-spacing:0.06em; color:#8A8A86; text-decoration:underline; text-underline-offset:3px; position:relative; z-index:1; }
+  .rc-tnc:hover{ color:var(--yellow); }
+  .rating-band{ display:flex; flex-wrap:wrap; align-items:center; gap:18px; background:var(--white); border-radius:var(--radius); padding:24px 28px; }
+  .rating-band .big{ font-size:clamp(40px,5vw,56px); font-weight:900; letter-spacing:-0.02em; line-height:1; }
+  .rating-band .stars{ color:var(--yellow-deep); font-size:22px; letter-spacing:2px; }
+  .rating-band p{ color:var(--grey); font-size:14.5px; }
+  .contact-cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media(max-width:860px){ .contact-cards{ grid-template-columns:1fr; } }
+  .ccard{ background:var(--white); border-radius:var(--radius); padding:26px 28px; }
+  .ccard .lab{ font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#8A8A86; margin-bottom:10px; }
+  .ccard a{ font-weight:800; font-size:19px; text-decoration:none; }
+  .ccard a:hover{ color:var(--slate); text-decoration:underline; }
+  .ccard p{ color:var(--grey); font-size:14px; margin-top:6px; }
 </style>
 </head>
 <body>
@@ -490,23 +534,23 @@
       <div class="nav-item">
         <a href="#suburbs">Suburbs <span class="car">&#9662;</span></a>
         <div class="dropdown"><div class="dd">
-          <a href="#suburbs">Mount Louisa</a>
-          <a href="#suburbs">Kirwan</a>
-          <a href="#appraisal">Market Updates</a>
+          <a href="mount-louisa.html">Mount Louisa</a>
+          <a href="kirwan.html">Kirwan</a>
+          <a href="market-updates.html">Market Updates</a>
         </div></div>
       </div>
       <div class="nav-item">
         <a href="#sales">Results <span class="car">&#9662;</span></a>
         <div class="dropdown"><div class="dd">
-          <a href="#sales">Recent Sales</a>
-          <a href="#reviews">Reviews</a>
+          <a href="recent-sales.html">Recent Sales</a>
+          <a href="reviews.html">Reviews</a>
         </div></div>
       </div>
       <div class="nav-item">
         <a href="#why">About <span class="car">&#9662;</span></a>
         <div class="dropdown"><div class="dd">
-          <a href="#why">Why Paul &amp; Mel</a>
-          <a href="#referral">Referral Program</a>
+          <a href="why-paul-and-mel.html">Why Paul &amp; Mel</a>
+          <a href="referral-program.html">Referral Program</a>
         </div></div>
       </div>
       <a href="#contact">Contact</a>
@@ -520,23 +564,23 @@
       <details class="m-group" open>
         <summary class="m-link">Suburbs</summary>
         <div class="m-sub">
-          <a href="#suburbs">Mount Louisa</a>
-          <a href="#suburbs">Kirwan</a>
-          <a href="#appraisal">Market Updates</a>
+          <a href="mount-louisa.html">Mount Louisa</a>
+          <a href="kirwan.html">Kirwan</a>
+          <a href="market-updates.html">Market Updates</a>
         </div>
       </details>
       <details class="m-group" open>
         <summary class="m-link">Results</summary>
         <div class="m-sub">
-          <a href="#sales">Recent Sales</a>
-          <a href="#reviews">Reviews</a>
+          <a href="recent-sales.html">Recent Sales</a>
+          <a href="reviews.html">Reviews</a>
         </div>
       </details>
       <details class="m-group" open>
         <summary class="m-link">About</summary>
         <div class="m-sub">
-          <a href="#why">Why Paul &amp; Mel</a>
-          <a href="#referral">Referral Program</a>
+          <a href="why-paul-and-mel.html">Why Paul &amp; Mel</a>
+          <a href="referral-program.html">Referral Program</a>
         </div>
       </details>
       <a class="m-link" href="#contact">Contact<span class="arr">&#8594;</span></a>
@@ -620,7 +664,7 @@
           <div class="addr">9 Perisher Court, Mount Louisa</div>
           <div class="meta">4 bed · 2 bath · 3 car · House</div>
           <div class="nums">
-            <div>Listed <b>$949,000</b></div>
+            <div>Last listed <b>$949,000</b></div>
             <div>Sold <b>$1,000,000</b></div>
           </div>
         </div>
@@ -635,7 +679,7 @@
           <div class="addr">41 Elford Place, Mount Louisa</div>
           <div class="meta">3 bed &#183; 2 bath &#183; 2 car &#183; House</div>
           <div class="nums">
-            <div>Listed <b>$1,090,000</b></div>
+            <div>Last listed <b>$1,090,000</b></div>
             <div>Sold <b>$1,100,000</b></div>
           </div>
         </div>
@@ -650,7 +694,7 @@
           <div class="addr">1670 Riverway Drive, Kelso</div>
           <div class="meta">4 bed &#183; 2 bath &#183; 6 car &#183; House</div>
           <div class="nums">
-            <div>Listed <b>$995,000</b></div>
+            <div>Last listed <b>$995,000</b></div>
             <div>Sold <b>$1,060,000</b></div>
           </div>
         </div>
@@ -834,6 +878,7 @@
         <div class="rc-label">Visa gift card reward*</div>
         <div class="rc-holder">From Paul &amp; Mel &#183; Ray White Townsville</div>
         <a class="btn btn-yellow rc-btn" href="#contact">Refer Someone Now</a>
+        <a class="rc-tnc" href="referral-program.html#terms">$500 Visa gift card. T&amp;Cs apply</a>
       </div>
     </div>
   </div>
@@ -1020,7 +1065,7 @@
   document.querySelectorAll('.pill').forEach(function(p){
     p.addEventListener('click',function(){ p.classList.toggle('on'); });
   });
-  document.getElementById('lead').addEventListener('submit',function(e){
+  var leadForm=document.getElementById('lead'); if(leadForm) leadForm.addEventListener('submit',function(e){
     e.preventDefault();
     this.style.display='none';
     document.getElementById('done').classList.add('show');
@@ -1063,11 +1108,11 @@
 
   // Sticky appraisal CTA on mobile: appears after the hero, hides at the form
   (function(){
-    var hero=document.querySelector('.hero'), contact=document.getElementById('contact');
+    var hero=document.querySelector('.hero')||document.querySelector('.page-hero'), contact=document.getElementById('contact');
     function upd(){
-      var past=window.scrollY>hero.offsetHeight*0.8;
-      var c=contact.getBoundingClientRect();
-      var atForm=c.top<window.innerHeight&&c.bottom>0;
+      var past=hero?window.scrollY>hero.offsetHeight*0.8:window.scrollY>420;
+      var atForm=false;
+      if(contact){ var c=contact.getBoundingClientRect(); atForm=c.top<window.innerHeight&&c.bottom>0; }
       document.body.classList.toggle('show-mcta', past&&!atForm);
     }
     window.addEventListener('scroll',upd,{passive:true});
