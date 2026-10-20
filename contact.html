@@ -573,6 +573,8 @@
   .ccard a:hover{ color:var(--slate); text-decoration:underline; }
   .ccard p{ color:var(--grey); font-size:14px; margin-top:6px; }
   /* cta-eyebrow-fix */ .cta-band .eyebrow{ color:#C9C9C5; }
+  /* drag-car */ .can-drag{ cursor:grab; } .can-drag.dragging{ cursor:grabbing; user-select:none; -webkit-user-select:none; scroll-behavior:auto !important; } .can-drag img{ -webkit-user-drag:none; user-select:none; }
+  .c-dots i{ position:relative; cursor:pointer; } .c-dots i::after{ content:""; position:absolute; inset:-9px -4px; }
 </style>
 </head>
 <body>
@@ -854,6 +856,39 @@
     }
     window.addEventListener('scroll',upd,{passive:true});
     upd();
+  })();
+
+  // drag-car: mouse drag scrolling for carousels on desktop, clickable dots (touch swipe is native)
+  (function(){
+    var down=null, moved=false;
+    var SEL='[data-car],.sold-wall';
+    function mark(){ document.querySelectorAll(SEL).forEach(function(el){ el.classList.toggle('can-drag', el.scrollWidth>el.clientWidth+2); }); }
+    mark(); window.addEventListener('resize',mark); window.addEventListener('load',mark);
+    document.addEventListener('pointerdown',function(e){
+      if(e.pointerType!=='mouse'||e.button!==0) return;
+      var el=e.target.closest&&e.target.closest(SEL); if(!el||!el.classList.contains('can-drag')) return;
+      down={el:el,x:e.clientX,l:el.scrollLeft,snap:el.style.scrollSnapType}; moved=false;
+    });
+    window.addEventListener('pointermove',function(e){
+      if(!down) return; var dx=e.clientX-down.x;
+      if(!moved && Math.abs(dx)<5) return;
+      if(!moved){ moved=true; down.el.style.scrollSnapType='none'; down.el.classList.add('dragging'); }
+      down.el.scrollLeft=down.l-dx;
+    });
+    function end(){
+      if(!down) return; var el=down.el;
+      el.classList.remove('dragging'); el.style.scrollSnapType=down.snap; down=null;
+      if(moved) setTimeout(function(){ moved=false; },0);
+    }
+    window.addEventListener('pointerup',end); window.addEventListener('pointercancel',end);
+    document.addEventListener('click',function(e){
+      if(moved){ e.preventDefault(); e.stopPropagation(); return; }
+      var d=e.target.closest&&e.target.closest('.c-dots i'); if(!d) return;
+      var dots=d.parentNode, el=dots.previousElementSibling; if(!el) return;
+      var n=dots.children.length, idx=[].indexOf.call(dots.children,d), max=el.scrollWidth-el.clientWidth;
+      el.scrollTo({left: n>1 ? max*idx/(n-1) : 0, behavior:'smooth'});
+    },true);
+    document.addEventListener('dragstart',function(e){ if(e.target.closest&&e.target.closest(SEL)) e.preventDefault(); });
   })();
 </script>
 </body>
