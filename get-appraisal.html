@@ -646,6 +646,7 @@
 
 
 <style>
+  .mcta{ display:none !important; }
   .q-wrap{ max-width:760px; margin:0 auto; padding:0 0 8px; }
   .q-head{ text-align:center; margin-bottom:34px; }
   .q-head h1{ font-size:clamp(30px,4.4vw,52px); letter-spacing:-0.02em; max-width:none; margin:0 auto; }
@@ -672,6 +673,15 @@
   .q-back, .q-skip{ font:inherit; font-weight:700; font-size:16.5px; color:#5E5E5A; background:none; border:0; cursor:pointer; padding:6px 0; }
   .q-back:hover, .q-skip:hover{ color:var(--ink); }
   .q-skip{ margin-left:auto; }
+  .q-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .q-grid .q-field + .q-field{ margin-top:0; }
+  @media(max-width:600px){ .q-grid{ grid-template-columns:1fr; } }
+  .q-pills{ display:flex; gap:10px; flex-wrap:wrap; }
+  .q-pill{ font:inherit; font-size:16px; padding:11px 22px; border-radius:999px; border:1.5px solid #D5D3CC; background:var(--white); cursor:pointer; }
+  .q-pill.on{ background:var(--ink); color:var(--white); border-color:var(--ink); }
+  .q-check{ display:flex; gap:12px; align-items:flex-start; margin-top:22px; font-size:14.5px; color:var(--grey); line-height:1.5; cursor:pointer; }
+  .q-check input{ width:20px; height:20px; margin-top:2px; flex:0 0 auto; accent-color:var(--ink); }
+  .q-fine{ color:#6B6B67; font-size:14px; margin-top:18px; }
   .q-note{ text-align:center; color:#6B6B67; font-size:14px; margin-top:20px; }
   .q-done{ text-align:center; padding:18px 0; }
   .q-done .tick{ width:64px; height:64px; border-radius:50%; background:var(--yellow); display:inline-flex; align-items:center; justify-content:center; font-size:30px; font-weight:800; }
@@ -698,7 +708,7 @@
 </section>
 <script>
 (function(){
-  var SUBURBS={'Townsville City':'4810','Aitkenvale':'4814','Annandale':'4814','Belgian Gardens':'4810','Bohle Plains':'4818','Condon':'4815','Cranbrook':'4814','Currajong':'4812','Deeragun':'4818','Douglas':'4814','Garbutt':'4814','Heatley':'4814','Idalia':'4811','Kelso':'4815','Kirwan':'4817','Mount Louisa':'4814','Mundingburra':'4812','Oonoonba':'4812','Pimlico':'4812','Railway Estate':'4810','Rasmussen':'4815','Rosslea':'4812','South Townsville':'4810','Thuringowa Central':'4817','Vincent':'4814','West End':'4810','Wulguru':'4816','Other Townsville suburb':''};
+  var SUBURBS=["Aitkenvale", "Alice River", "Alligator Creek", "Annandale", "Arcadia", "Balgal Beach", "Belgian Gardens", "Black River", "Bluewater", "Bohle", "Bohle Plains", "Burdell", "Bushland Beach", "Castle Hill", "Cluden", "Condon", "Cosgrove", "Cranbrook", "Currajong", "Deeragun", "Douglas", "Garbutt", "Gulliver", "Heatley", "Hermit Park", "Horseshoe Bay", "Hyde Park", "Idalia", "Jensen", "Julago", "Kelso", "Kirwan", "Mount Louisa", "Mount Low", "Mount St John", "Mount Stuart", "Mundingburra", "Murray", "Mysterton", "Nelly Bay", "North Ward", "Oonoonba", "Pallarenda", "Picnic Bay", "Pimlico", "Pinnacles", "Railway Estate", "Rasmussen", "Rollingstone", "Rosslea", "Rowes Bay", "Saunders Beach", "South Townsville", "Stuart", "Thuringowa Central", "Toolakea", "Toomulla", "Townsville City", "Townsville West", "Vincent", "West End", "Woodstock", "Wulguru", "Yabulu"];
   var A={}; var stack=[]; var cur='help';
   var STEPS={
     help:{t:'What would you like help with?',type:'choice',opts:["I'm curious what my property is worth","I'm considering selling","I'm planning to sell soon","I'd like local market information","I'd like to speak with Paul or Mel"],refer:true},
@@ -710,7 +720,7 @@
     rent:{t:"What's the current rent?",hint:"Optional, leave blank if you're not sure.",type:'text',label:'Current rent',ph:'e.g. $450 per week',req:false},
     timing:{t:'When are you thinking about selling?',hint:'Optional.',type:'choice',opts:['Just researching','Within 3 months','3–6 months','6–12 months','Not sure yet'],skip:true},
     notes:{t:'Anything else Paul or Mel should know?',hint:'Optional, property notes, questions, timing, etc.',type:'area',req:false},
-    details:{t:'Where should Paul or Mel reach you?',type:'details'}
+    details:{t:'Your contact details',hint:'Last step. Paul or Mel will use these to send your personal update.',type:'details'}
   };
   function path(){
     var p=['help','address','suburb','postcode','invest'];
@@ -739,19 +749,24 @@
     } else if(s.type==='text'){
       h+='<label class="q-lab" for="qi">'+esc(s.label)+'</label><input class="q-in" id="qi" type="text"'+(s.mode?' inputmode="'+s.mode+'"':'')+(s.max?' maxlength="'+s.max+'"':'')+(s.auto?' autocomplete="'+s.auto+'"':'')+' placeholder="'+esc(s.ph||'')+'" value="'+esc(A[cur]||'')+'">';
     } else if(s.type==='select'){
-      h+='<label class="q-lab" for="qi">Suburb</label><select class="q-in" id="qi">'; Object.keys(SUBURBS).forEach(function(k){ h+='<option'+((A.suburb||'Townsville City')===k?' selected':'')+'>'+esc(k)+'</option>'; }); h+='</select>';
+      h+='<label class="q-lab" for="qi">Suburb</label><select class="q-in" id="qi"><option value="">Select your suburb</option>'; SUBURBS.concat(['Other suburb (not listed)']).forEach(function(k){ h+='<option'+(A.suburb===k?' selected':'')+'>'+esc(k)+'</option>'; }); h+='</select>'
+       +'<div id="qother" style="margin-top:14px;'+(A.suburb==='Other suburb (not listed)'?'':'display:none;')+'"><label class="q-lab" for="qo">Suburb name</label><input class="q-in" id="qo" type="text" value="'+esc(A.other||'')+'"></div>';
     } else if(s.type==='area'){
       h+='<textarea class="q-in" id="qi" aria-label="'+esc(s.t)+'">'+esc(A[cur]||'')+'</textarea>';
     } else if(s.type==='details'){
-      h+='<div class="q-field"><label class="q-lab" for="qn">First name</label><input class="q-in" id="qn" type="text" autocomplete="given-name" placeholder="Your first name" value="'+esc(A.name||'')+'"></div>'
+      var pm=A.method||'';
+      h+='<div class="q-grid"><div class="q-field"><label class="q-lab" for="qn">First name</label><input class="q-in" id="qn" type="text" autocomplete="given-name" value="'+esc(A.name||'')+'"></div>'
+       +'<div class="q-field"><label class="q-lab" for="ql">Last name</label><input class="q-in" id="ql" type="text" autocomplete="family-name" value="'+esc(A.last||'')+'"></div>'
        +'<div class="q-field"><label class="q-lab" for="qm">Mobile number</label><input class="q-in" id="qm" type="tel" inputmode="tel" autocomplete="tel" placeholder="04xx xxx xxx" value="'+esc(A.mobile||'')+'"></div>'
-       +'<div class="q-field"><label class="q-lab" for="qe">Email</label><input class="q-in" id="qe" type="email" autocomplete="email" placeholder="you@example.com" value="'+esc(A.email||'')+'"></div>';
+       +'<div class="q-field"><label class="q-lab" for="qe">Email address</label><input class="q-in" id="qe" type="email" autocomplete="email" value="'+esc(A.email||'')+'"></div></div>'
+       +'<div class="q-field"><span class="q-lab">Preferred contact method</span><div class="q-pills">'+['Phone','SMS','Email'].map(function(m){ return '<button type="button" class="q-pill'+(pm===m?' on':'')+'" data-m="'+m+'">'+m+'</button>'; }).join('')+'</div></div>'
+       +'<label class="q-check"><input type="checkbox" id="qc"'+(A.consent?' checked':'')+'><span>I agree that Paul &amp; Mel may contact me regarding my property enquiry and provide the market information I requested. I understand that I can unsubscribe from marketing communications at any time. Read our <a href="#" onclick="return false;">privacy policy</a>.</span></label>';
     }
     h+='</div><div class="q-err" id="qerr" role="alert"></div>';
-    var showNext=(s.type!=='choice'), nxt=(cur==='details'?'Get My Free Appraisal':'Continue');
+    var showNext=(s.type!=='choice'), nxt=(cur==='details'?'Send My Free Appraisal':'Continue');
     h+='<div class="q-nav">'+(showNext?'<button type="button" class="q-next" id="qnext">'+nxt+'</button>':'')
       +(stack.length?'<button type="button" class="q-back" id="qback">&#8592; Back</button>':'')
-      +(s.skip?'<button type="button" class="q-skip" id="qskip">Skip this question &#8594;</button>':'')+'</div>';
+      +(s.skip?'<button type="button" class="q-skip" id="qskip">Skip this question &#8594;</button>':'')+'</div>'+(cur==='details'?'<p class="q-fine">Your details remain private. There is no obligation and no unwanted pressure.</p>':'');
     el.innerHTML=h;
     var b=document.getElementById('qback'); if(b) b.addEventListener('click',back);
     var sk=document.getElementById('qskip'); if(sk) sk.addEventListener('click',function(){ A[cur]=''; next(); });
@@ -761,7 +776,8 @@
       setTimeout(next,220);
     }); });
     var sel=document.getElementById('qi');
-    if(cur==='suburb' && sel){ sel.addEventListener('change',function(){ A.suburb=sel.value; var pc=SUBURBS[sel.value]; if(pc) A.postcode=pc; }); if(!A.suburb){ A.suburb='Townsville City'; if(!A.postcode) A.postcode=SUBURBS['Townsville City']; } }
+    if(cur==='suburb' && sel){ sel.addEventListener('change',function(){ document.getElementById('qother').style.display=(sel.value==='Other suburb (not listed)')?'block':'none'; }); }
+    el.querySelectorAll('.q-pill').forEach(function(pl){ pl.addEventListener('click',function(){ A.method=(A.method===pl.getAttribute('data-m'))?'':pl.getAttribute('data-m'); el.querySelectorAll('.q-pill').forEach(function(x){ x.classList.toggle('on',x.getAttribute('data-m')===A.method); }); }); });
     var nb=document.getElementById('qnext'); if(nb) nb.addEventListener('click',advance);
     el.querySelectorAll('input').forEach(function(i){ i.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); advance(); } }); });
     if(focus){ var f=document.getElementById('qi')||document.getElementById('qn'); if(f && f.tagName!=='SELECT') f.focus({preventScroll:true}); card.scrollIntoView({block:'nearest',behavior:'smooth'}); }
@@ -773,14 +789,15 @@
       if(s.req && !v){ return err('Please fill this in to continue.'); }
       if(s.pat && !s.pat.test(v)){ return err(s.msg); }
       A[cur]=v; return next(); }
-    if(s.type==='select'){ A.suburb=document.getElementById('qi').value; if(!A.postcode && SUBURBS[A.suburb]) A.postcode=SUBURBS[A.suburb]; return next(); }
+    if(s.type==='select'){ v=document.getElementById('qi').value; if(!v) return err('Please select your suburb.'); A.suburb=v; if(v==='Other suburb (not listed)'){ A.other=document.getElementById('qo').value.trim(); if(!A.other) return err('Please enter your suburb.'); } return next(); }
     if(s.type==='area'){ A[cur]=document.getElementById('qi').value.trim(); return next(); }
     if(s.type==='details'){
-      var n=document.getElementById('qn').value.trim(), m=document.getElementById('qm').value.trim(), e=document.getElementById('qe').value.trim();
-      A.name=n; A.mobile=m; A.email=e;
+      var n=document.getElementById('qn').value.trim(), l=document.getElementById('ql').value.trim(), m=document.getElementById('qm').value.trim(), e=document.getElementById('qe').value.trim();
+      A.name=n; A.last=l; A.mobile=m; A.email=e; A.consent=document.getElementById('qc').checked;
       if(!n) return err('Please add your first name.');
       if(m.replace(/\D/g,'').length<8) return err('Please add a mobile number Paul or Mel can reach you on.');
       if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return err('Please add a valid email address.');
+      if(!A.consent) return err('Please tick the box to agree so Paul or Mel can contact you.');
       return submit();
     }
   }
