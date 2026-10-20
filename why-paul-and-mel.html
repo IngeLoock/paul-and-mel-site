@@ -489,9 +489,6 @@
   .sold-wall img{ flex:0 0 auto; width:23.2%; scroll-snap-align:start; aspect-ratio:3/4; object-fit:cover; border-radius:12px; display:block; box-shadow:0 10px 26px rgba(18,18,18,0.12); }
   @media(max-width:700px){ .sold-wall img{ width:64%; scroll-snap-align:center; } }
   .c-dots.always{ display:flex !important; margin-top:0; }
-  .car-nav{ display:flex; align-items:center; justify-content:center; gap:18px; margin-top:18px; }
-  .car-btn{ width:42px; height:42px; border-radius:50%; border:1.5px solid var(--ink); background:transparent; color:var(--ink); font-size:17px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s ease, border-color .2s ease; }
-  .car-btn:hover, .car-btn:active{ background:var(--yellow); border-color:var(--yellow); }
   .sold-wall img:nth-child(4n+1){ transform:rotate(-1.4deg); }
   .sold-wall img:nth-child(4n+3){ transform:rotate(1.2deg); }
   .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
@@ -501,7 +498,10 @@
   .stat b{ display:block; font-size:clamp(30px,3.2vw,42px); font-weight:900; letter-spacing:-0.02em; line-height:1.05; }
   .stat span{ display:block; color:var(--grey); font-size:14.5px; margin-top:8px; }
   .bg-dark .stat span{ color:#C9C9C5; }
-  .cta-band{ background:var(--ink); color:var(--white); }
+  .cta-band{ background:var(--slate); color:var(--white); }
+  .stat b .s-ico{ width:40px; height:40px; display:block; color:var(--ink); }
+  .bg-stone .c-link{ color:var(--ink); }
+  .bg-stone .c-link:hover, .bg-stone .c-link:active{ color:var(--yellow); text-shadow:0 0 1px var(--ink),0 1px 0 rgba(18,18,18,.35); }
   .cta-band .wrap{ display:flex; flex-wrap:wrap; gap:26px; align-items:center; justify-content:space-between; }
   .cta-band h2{ font-size:clamp(26px,3.4vw,40px); max-width:22ch; }
   .list-ticks{ list-style:none; }
@@ -832,39 +832,27 @@
     upd();
   })();
 
-  // Wall of Sold carousel (all screen sizes)
+  // Wall of Sold carousel (all screen sizes): dots + auto-advance, same behaviour as the other carousels
   (function(){
     var el=document.querySelector('.sold-wall'); if(!el) return;
-    var nav=document.createElement('div'); nav.className='car-nav';
-    var prev=document.createElement('button'); prev.className='car-btn'; prev.innerHTML='&#8592;'; prev.setAttribute('aria-label','Previous');
-    var next=document.createElement('button'); next.className='car-btn'; next.innerHTML='&#8594;'; next.setAttribute('aria-label','Next');
+    var kids=[].slice.call(el.children); if(kids.length<2) return;
     var dots=document.createElement('div'); dots.className='c-dots always';
-    nav.appendChild(prev); nav.appendChild(dots); nav.appendChild(next);
-    el.parentNode.insertBefore(nav, el.nextSibling);
-    var last=0;
-    function pages(){ return Math.max(1, Math.ceil((el.scrollWidth-el.clientWidth)/el.clientWidth)+1); }
+    el.parentNode.insertBefore(dots, el.nextSibling);
+    function step(){ return kids[0].getBoundingClientRect().width + 16; }
+    function pages(){ return Math.max(1, Math.round((el.scrollWidth-el.clientWidth)/step())+1); }
     function upd(){ var max=el.scrollWidth-el.clientWidth; var cur=max>0?Math.round(el.scrollLeft/max*(dots.children.length-1)):0; [].forEach.call(dots.children,function(d,j){ d.classList.toggle('on', j===cur); }); }
     function build(){ dots.innerHTML=''; for(var i=0;i<pages();i++){ var d=document.createElement('i'); if(i===0)d.className='on'; dots.appendChild(d); } upd(); }
-    function go(dir){
-      last=Date.now();
-      var max=el.scrollWidth-el.clientWidth;
-      var target=el.scrollLeft+dir*el.clientWidth;
-      if(target>max+10) target=0; if(target<-10) target=max;
-      el.scrollTo({left:Math.max(0,Math.min(target,max)), behavior:'smooth'});
-    }
-    prev.addEventListener('click',function(){ go(-1); });
-    next.addEventListener('click',function(){ go(1); });
     el.addEventListener('scroll',upd,{passive:true});
     window.addEventListener('resize',build);
     build();
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var visible=false;
+    var visible=false, last=0;
     new IntersectionObserver(function(es){ visible=es[0].isIntersecting; },{threshold:0.3}).observe(el);
-    ['touchstart','pointerdown','mouseenter'].forEach(function(ev){ el.addEventListener(ev,function(){ last=Date.now(); },{passive:true}); });
+    ['touchstart','pointerdown'].forEach(function(ev){ el.addEventListener(ev,function(){ last=Date.now(); },{passive:true}); });
     setInterval(function(){
       if(!visible || Date.now()-last<7000 || document.hidden) return;
       var max=el.scrollWidth-el.clientWidth;
-      var target=el.scrollLeft>=max-10 ? 0 : Math.min(el.scrollLeft+el.clientWidth, max);
+      var target=el.scrollLeft>=max-10 ? 0 : Math.min(el.scrollLeft+step(), max);
       el.scrollTo({left:target, behavior:'smooth'});
     }, 4000);
   })();
