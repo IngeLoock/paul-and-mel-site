@@ -397,6 +397,8 @@
   .f-grid{ display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr 1fr; gap:32px; margin-bottom:44px; }
 .f-explore .f-list li{ margin-bottom:8px; }
 .f-explore .f-list li a{ color:#C9C9C5; }
+.f-explore .f-list li a:hover, .f-explore .f-list li a:active, .f-explore .f-list li a:focus-visible{ color:var(--yellow); }
+.f-toggle{ display:none; }
   @media (max-width:900px){ .f-grid{ grid-template-columns:1fr 1fr; } }
   @media (max-width:560px){ .f-grid{ grid-template-columns:1fr; } }
   footer h4{ color:var(--white); font-size:14px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:16px; }
@@ -460,7 +462,16 @@
     footer{ padding:40px 0 22px; }
     .f-grid{ display:flex; flex-direction:column; gap:20px; margin-bottom:26px; text-align:center; }
     footer h4{ display:none; }
-.f-explore{ display:none; }
+.f-contact{ order:1; } .f-explore{ order:2; } .f-follow{ order:3; }
+.f-toggle{ display:inline-flex; align-items:center; justify-content:center; gap:10px; margin:0 auto; min-height:44px; padding:12px 22px; border:1px solid rgba(255,255,255,0.22); border-radius:999px; background:transparent; color:var(--white); font-family:inherit; font-weight:700; font-size:14px; line-height:1; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.f-toggle::after{ content:""; width:7px; height:7px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:translateY(-2px) rotate(45deg); transition:transform .2s; }
+.f-toggle:hover, .f-toggle:active, .f-toggle[aria-expanded="true"]{ color:var(--yellow); border-color:var(--yellow); }
+.f-toggle[aria-expanded="true"]::after{ transform:translateY(2px) rotate(-135deg); }
+.f-explore .f-list{ display:none; margin-top:12px; text-align:center; }
+.f-explore.open .f-list{ display:block; }
+.f-explore .f-list li{ margin:0; border-top:1px solid rgba(255,255,255,0.1); }
+.f-explore .f-list li:last-child{ border-bottom:1px solid rgba(255,255,255,0.1); }
+.f-explore .f-list li a{ display:block; padding:13px 0; font-size:15px; }
     .f-grid > div:first-child p{ display:none; }
     .f-grid .brand{ justify-content:center; margin-bottom:0; flex-direction:column; align-items:center; gap:12px; }
     .f-contact .f-list{ display:flex; justify-content:center; flex-wrap:wrap; gap:10px; }
@@ -778,8 +789,9 @@
         <p style="font-size:14.5px; max-width:34ch; margin-top:14px;">Local people. Real results. Townsville's trusted property partners.</p>
       </div>
       <div class="f-explore">
+        <button type="button" class="f-toggle" aria-expanded="false" aria-controls="f-explore-list">Explore the site</button>
         <h4>Explore</h4>
-        <ul class="f-list">
+        <ul class="f-list" id="f-explore-list">
           <li><a href="free-appraisal.html">Free Appraisal</a></li>
           <li><a href="mount-louisa.html">Mount Louisa</a></li>
           <li><a href="kirwan.html">Kirwan</a></li>
@@ -974,6 +986,10 @@
     },true);
     document.addEventListener('dragstart',function(e){ if(e.target.closest&&e.target.closest(SEL)) e.preventDefault(); });
   })();
+</script>
+<script>
+(function(){var b=document.querySelector('.f-toggle'),w=document.querySelector('.f-explore');if(!b||!w)return;
+b.addEventListener('click',function(){var o=w.classList.toggle('open');b.setAttribute('aria-expanded',o?'true':'false');});})();
 </script>
 </body>
 </html>
