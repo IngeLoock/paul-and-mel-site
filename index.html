@@ -523,7 +523,7 @@
   .c-dots i{ position:relative; cursor:pointer; } .c-dots i::after{ content:""; position:absolute; inset:-9px -4px; }
   /* ---------- Christmas: List and Win ---------- */
   .xmas-sec{ padding:clamp(40px,5vw,72px) 0; }
-  .xmas{ position:relative; overflow:hidden; border-radius:22px; background:linear-gradient(135deg,#34353C 0%,#1B1C20 70%); color:var(--white); padding:clamp(28px,4.4vw,60px); display:grid; grid-template-columns:1.1fr 0.9fr; gap:clamp(28px,5vw,72px); align-items:center; }
+  .xmas{ position:relative; overflow:hidden; border-radius:22px; background:linear-gradient(180deg,#42434B 0%,#26272C 40%,#0A0A0B 100%) 50% 0 / 100% 135% no-repeat; background-color:#0A0A0B; animation:xShift 9s ease-in-out infinite alternate; color:var(--white); padding:clamp(28px,4.4vw,60px); display:grid; grid-template-columns:1.1fr 0.9fr; gap:clamp(28px,5vw,72px); align-items:center; }
   .xmas::before{ content:''; position:absolute; top:-120px; right:-90px; width:340px; height:340px; border-radius:50%; background:rgba(255,229,18,0.07); }
   .xmas::after{ content:''; position:absolute; top:-50px; right:-20px; width:190px; height:190px; border-radius:50%; background:rgba(255,229,18,0.09); }
   .xmas > *{ position:relative; z-index:1; min-width:0; }
@@ -549,6 +549,8 @@
   @media (prefers-reduced-motion:reduce){ .x-lights{ animation:none; } }
   .xmas{ padding-top:clamp(44px,5vw,72px); }
   @media (max-width:860px){ .x-tree{ bottom:auto; top:58px; right:22px; width:44px; } }
+  @keyframes xShift{ from{ background-position:50% 0; } to{ background-position:50% 100%; } }
+  @media (prefers-reduced-motion:reduce){ .xmas{ animation:none; } }
 </style>
 </head>
 <body>
