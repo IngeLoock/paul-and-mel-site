@@ -591,6 +591,11 @@
   /* drag-car */ .can-drag{ cursor:grab; } .can-drag.dragging{ cursor:grabbing; user-select:none; -webkit-user-select:none; scroll-behavior:auto !important; } .can-drag img{ -webkit-user-drag:none; user-select:none; }
   .c-dots i{ position:relative; cursor:pointer; } .c-dots i::after{ content:""; position:absolute; inset:-9px -4px; }
 .ico-svg{ fill:currentColor; width:1em; height:1em; vertical-align:-0.14em; flex:none; }
+
+  .q-ac-wrap{ position:relative; }
+  .q-ac{ position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:20; margin:0; padding:6px; list-style:none; background:var(--white); border:1.5px solid #D5D3CC; border-radius:14px; box-shadow:0 14px 34px rgba(18,18,18,0.16); max-height:260px; overflow:auto; }
+  .q-ac li{ padding:13px 14px; border-radius:10px; font-size:15.5px; line-height:1.35; color:var(--ink); cursor:pointer; }
+  .q-ac li:hover, .q-ac li.on{ background:var(--yellow); }
 </style>
 </head>
 <body>
@@ -724,16 +729,7 @@
         </div>
         <div class="field"><label for="f-name">First name</label><input id="f-name" name="name" autocomplete="given-name" placeholder="Your first name"></div>
         <div class="field"><label for="f-phone">Mobile number</label><input id="f-phone" name="phone" autocomplete="tel" placeholder="04xx xxx xxx"></div>
-        <div class="field">
-          <label for="f-suburb">Your suburb</label>
-          <select id="f-suburb" name="suburb">
-            <option>Mount Louisa</option>
-            <option>Kirwan</option>
-            <option>Rosslea</option>
-            <option>Thuringowa</option>
-            <option>Other Townsville suburb</option>
-          </select>
-        </div>
+        <div class="field"><label for="f-address">Property address</label><input id="f-address" name="address" placeholder="Start typing your address"></div>
         <button class="btn btn-yellow" type="submit">Get My Free Property Update</button>
         <div class="form-note">Free · No obligation · Your details stay private</div>
       </form>
@@ -803,6 +799,7 @@
           <li><a href="https://www.facebook.com/paulandmelissakotzerealestateagents/" target="_blank" rel="noopener">Facebook</a></li>
           <li><a href="https://www.instagram.com/paul_melissa_ray_white_tsv/" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://www.youtube.com/channel/UC9ALl_L_GuSFEdGgmXq6icQ" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://linktr.ee/paul_mel_kotze" target="_blank" rel="noopener">Linktree</a></li>
         </ul>
       </div>
     </div>
@@ -932,6 +929,53 @@
 <script>
 (function(){var b=document.querySelector('.f-toggle'),w=document.querySelector('.f-explore');if(!b||!w)return;
 b.addEventListener('click',function(){var o=w.classList.toggle('open');b.setAttribute('aria-expanded',o?'true':'false');});})();
+</script>
+<script>
+(function(){
+  var inp=document.getElementById('f-address'); if(!inp) return;
+  var wrap=document.createElement('div'); wrap.className='q-ac-wrap'; inp.parentNode.insertBefore(wrap,inp); wrap.appendChild(inp);
+  var list=document.createElement('ul'); list.className='q-ac'; list.setAttribute('role','listbox'); list.hidden=true; wrap.appendChild(list);
+  inp.setAttribute('role','combobox'); inp.setAttribute('aria-autocomplete','list'); inp.setAttribute('aria-expanded','false'); inp.setAttribute('autocomplete','off');
+  var items=[], act=-1, tmr=null, seq=0;
+  function close(){ list.hidden=true; inp.setAttribute('aria-expanded','false'); act=-1; }
+  function mark(){ [].forEach.call(list.children,function(li,i){ li.classList.toggle('on',i===act); li.setAttribute('aria-selected',i===act?'true':'false'); }); }
+  function pick(i){ var it=items[i]; if(!it) return; inp.value=it.label; close(); inp.focus(); }
+  function show(){
+    list.innerHTML='';
+    items.forEach(function(it,i){ var li=document.createElement('li'); li.setAttribute('role','option'); li.textContent=it.label; li.addEventListener('mousedown',function(e){ e.preventDefault(); pick(i); }); list.appendChild(li); });
+    list.hidden=!items.length; inp.setAttribute('aria-expanded',items.length?'true':'false'); act=-1;
+  }
+  function search(){
+    var raw=inp.value.trim(), q=raw.replace(/^\s*(?:\d+[A-Za-z]?\s*\/\s*)?\d+[A-Za-z]?\s+/,'');
+    if(q.length<3){ items=[]; show(); return; }
+    var my=++seq;
+    fetch('https://photon.komoot.io/api/?q='+encodeURIComponent(q)+'&limit=10&lang=en&lat=-19.26&lon=146.82&bbox=96.8,-44.0,168.0,-9.0')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if(my!==seq) return;
+        var seen={}; items=[];
+        (d.features||[]).forEach(function(f){ var p=f.properties||{};
+          if(p.countrycode!=='AU' || !p.street&&p.osm_value!=='residential'&&p.type!=='street'&&!p.name) return;
+          var street=p.street||p.name, sub=p.district||p.locality||p.city||'';
+          var key=(street+'|'+sub).toLowerCase(); if(seen[key]) return; seen[key]=1;
+          var st={'Queensland':'QLD','New South Wales':'NSW','Victoria':'VIC','South Australia':'SA','Western Australia':'WA','Tasmania':'TAS','Northern Territory':'NT','Australian Capital Territory':'ACT'}[p.state]||p.state||'';
+          var m=raw.match(/^\s*((?:\d+[A-Za-z]?\s*\/\s*)?\d+[A-Za-z]?)\s+/);
+          items.push({label:(m?m[1]+' ':'')+street+', '+sub+(st?' '+st:'')+(p.postcode?' '+p.postcode:'')});
+        });
+        items.sort(function(x,y){ return (y.label.indexOf(' QLD')>-1)-(x.label.indexOf(' QLD')>-1); });
+        items=items.slice(0,6); show();
+      }).catch(function(){ items=[]; show(); });
+  }
+  inp.addEventListener('input',function(){ clearTimeout(tmr); tmr=setTimeout(search,280); });
+  inp.addEventListener('keydown',function(e){
+    if(list.hidden) return;
+    if(e.key==='ArrowDown'){ e.preventDefault(); act=(act+1)%items.length; mark(); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); act=(act-1+items.length)%items.length; mark(); }
+    else if(e.key==='Enter' && act>-1){ e.preventDefault(); e.stopImmediatePropagation(); pick(act); }
+    else if(e.key==='Escape'){ close(); }
+  },true);
+  inp.addEventListener('blur',function(){ setTimeout(close,120); });
+})();
 </script>
 </body>
 </html>
